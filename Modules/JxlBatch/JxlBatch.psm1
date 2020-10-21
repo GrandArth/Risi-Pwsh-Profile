@@ -24,9 +24,7 @@ function JXLdec{
 	)
 	Get-ChildItem -LiteralPath $RootPath *.* -Recurse | ForEach-Object{
 		if($_.Extension -eq ".jxlg"){
-			djpegxl $_.FullName "$($_.Directory)/$($_.BaseName)-decoded.jpg" -j;
-			#decode file that is transcoded from jpeg, if it is not transcoded from jpeg
-			#this command will fail
+			djpegxl $_.FullName "$($_.Directory)/$($_.BaseName)-decoded.jpg";
 		}elseif ($_.Extension -eq ".jxl") {
 			djpegxl $_.FullName "$($_.Directory)/$($_.BaseName)-decoded.jpg"   --jpeg_quality=100 --noise=0;
 			#decode any jxl file
