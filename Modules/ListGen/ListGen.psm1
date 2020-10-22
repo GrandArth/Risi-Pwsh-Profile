@@ -1,40 +1,43 @@
 function genlist{
-	#([string]$Path = $PWD, [string]$format = "m4a")
 	param (
 		[parameter(Position=0)][string]$format = "m4a",
 		[parameter(Position=1)][string]$Path = $PWD
 	)
-	[string[]]$InfoList = @();
-	[string]$AlbumTemp;
-	[string]$AlbumArtistTemp;
-	[string]$DiscTemp;
+
+	$ObjectList = New-Object System.Collections.Generic.List[System.Object];
+	$OutputList = New-Object System.Collections.Generic.List[string];
+
 	Get-ChildItem -LiteralPath $Path -Include *.$format | ForEach-Object {
 		$TempTrackInfo = mediainfo "$($_.FullName)" --Output=JSON;
-		$TempTrackInfo = $TempTrackInfo | ConvertFrom-Json;
-		$Album=$TempTrackInfo.media.track.Album;
-		If( [string]$AlbumTemp -ne [string]$Album ){
-			$InfoList = $InfoList + @("Album: $Album");
-			$AlbumTemp = $Album;
+		$TempTrackObject = $TempTrackInfo | ConvertFrom-Json;
+		$TrackObjectDefine=[PSCustomObject]@{
+			AlbumPerformer = $TempTrackObject.media.track.Album_Performer[0]
+			AlbumName = $TempTrackObject.media.track.Album[0]
+			DiscNumber=[int]$TempTrackObject.media.track.Part_Position[0]
+			TrackNumber=[int]$TempTrackObject.media.track.Track_Position[0]
+			TrackTitle=$TempTrackObject.media.track.Track[0]
+			TrackPerformer=$TempTrackObject.media.track.Performer[0]
 		}
-		$AlbumArtist=$TempTrackInfo.media.track.Album_Performer;
-		If([string]$AlbumArtistTemp -ne [string]$AlbumArtist){
-			$InfoList = $InfoList + @("Album Artist: $AlbumArtist");
-			$AlbumArtistTemp=  $AlbumArtist;
-		}
-		$DiscNum=$TempTrackInfo.media.track.Part_Position;
-		If([string]$DiscTemp -ne [string]$DiscNum){
-			$InfoList = $InfoList + @("Disc: $DiscNum");
-			$DiscTemp = $DiscNum;
-		}
-		[string]$TrackNum = $TempTrackInfo.media.track.Track_Position;
-		[string]$TrackTitle = $TempTrackInfo.media.track.Track;
-		[string]$TrackArtist = $TempTrackInfo.media.track.Performer;
-		if($TrackArtist -eq $AlbumArtist){
-			$InfoList = $InfoList + @("$TrackNum	$TrackTitle");
-		}else {
-			$InfoList = $InfoList + @("$TrackNum	$TrackTitle		By: $TrackArtist");
+
+		$ObjectList.Add($TrackObjectDefine);
+	}
+#man.. this is the most shit pipeline i have ever written!
+	$ObjectList | Group-Object -Property AlbumPerformer | ForEach-Object {
+		$OutputList.Add("Album Artist(s)	$($_.Name)");
+		$_.Group | Group-Object -Property AlbumName| ForEach-Object {
+			$OutputList.Add("Album	$($_.Name)");
+			$_.Group | Group-Object -Property DiscNumber| ForEach-Object {
+				$OutputList.Add("Disk Number	$($_.Name)");
+				$_.Group | Sort-Object -Property TrackNumber |ForEach-Object {
+					if($_.AlbumPerformer -eq $_.TrackPerformer){
+						$OutputList.Add("$($_.TrackNumber)	$($_.TrackTitle)");
+					}else {
+						$OutputList.Add("$($_.TrackNumber)	$($_.TrackTitle)	By: $($_.TrackPerformer)");
+					}
+				}
+			}
 		}
 	}
-	$InfoList
-	Set-Clipboard $InfoList;
+	$OutputList
+	Set-Clipboard $OutputList;
 }
