@@ -1,25 +1,27 @@
 function genlist{
 	param (
-		[parameter(Position=0)][string]$format = "m4a",
+		[parameter(Position=0)][string]$FileFormat = "*.m4a,*.flac,*.opus",
 		[parameter(Position=1)][string]$Path = $PWD
 	)
 
 	$ObjectList = New-Object System.Collections.Generic.List[System.Object];
 	$OutputList = New-Object System.Collections.Generic.List[string];
 
-	Get-ChildItem -LiteralPath $Path -Include *.$format | ForEach-Object {
+	Get-ChildItem -LiteralPath $Path -Include $FileFormat.Split(",") | ForEach-Object {
 		$TempTrackInfo = mediainfo "$($_.FullName)" --Output=JSON;
-		$TempTrackObject = $TempTrackInfo | ConvertFrom-Json;
-		$TrackObjectDefine=[PSCustomObject]@{
-			AlbumPerformer = $TempTrackObject.media.track.Album_Performer[0]
-			AlbumName = $TempTrackObject.media.track.Album[0]
-			DiscNumber=[int]$TempTrackObject.media.track.Part_Position[0]
-			TrackNumber=[int]$TempTrackObject.media.track.Track_Position[0]
-			TrackTitle=$TempTrackObject.media.track.Track[0]
-			TrackPerformer=$TempTrackObject.media.track.Performer[0]
+		$TempTrackInfo = $TempTrackInfo | ConvertFrom-Json;
+		$TempTrackInfo=[PSCustomObject]@{
+			AlbumPerformer = $TempTrackInfo.media.track.Album_Performer[0]
+			AlbumName = $TempTrackInfo.media.track.Album[0]
+			DiscNumber=[int]$TempTrackInfo.media.track.Part_Position[0] + [int]$TempTrackInfo.media.track.Part[0]
+			#some container user Part to indicate disc, some use Part+Postion, if not exist, [int] will set it to zero
+			#so simply add them up will provide accurate result
+			TrackNumber=[int]$TempTrackInfo.media.track.Track_Position[0]
+			TrackTitle=$TempTrackInfo.media.track.Track[0]
+			TrackPerformer=$TempTrackInfo.media.track.Performer[0]
 		}
 
-		$ObjectList.Add($TrackObjectDefine);
+		$ObjectList.Add($TempTrackInfo);
 	}
 #man.. this is the most shit pipeline i have ever written!
 	$ObjectList | Group-Object -Property AlbumPerformer | ForEach-Object {
