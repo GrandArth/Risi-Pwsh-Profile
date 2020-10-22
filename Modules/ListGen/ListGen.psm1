@@ -23,16 +23,16 @@ function genlist{
 	}
 #man.. this is the most shit pipeline i have ever written!
 	$ObjectList | Group-Object -Property AlbumPerformer | ForEach-Object {
-		$OutputList.Add("Album Artist(s)	$($_.Name)");
+		$OutputList.Add("`nAlbum Artist(s): $($_.Name)");
 		$_.Group | Group-Object -Property AlbumName| ForEach-Object {
-			$OutputList.Add("Album	$($_.Name)");
+			$OutputList.Add("	Album: $($_.Name)");
 			$_.Group | Group-Object -Property DiscNumber| ForEach-Object {
-				$OutputList.Add("Disk Number	$($_.Name)");
+				$OutputList.Add("		Disc Number: $($_.Name)");
 				$_.Group | Sort-Object -Property TrackNumber |ForEach-Object {
 					if($_.AlbumPerformer -eq $_.TrackPerformer){
-						$OutputList.Add("$($_.TrackNumber)	$($_.TrackTitle)");
+						$OutputList.Add("			$($_.TrackNumber) $($_.TrackTitle)");
 					}else {
-						$OutputList.Add("$($_.TrackNumber)	$($_.TrackTitle)	By: $($_.TrackPerformer)");
+						$OutputList.Add("			$($_.TrackNumber) $($_.TrackTitle) By: $($_.TrackPerformer)");
 					}
 				}
 			}
