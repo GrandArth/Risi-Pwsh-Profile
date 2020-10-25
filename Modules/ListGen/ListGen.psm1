@@ -1,6 +1,6 @@
 function genlist{
 	param (
-		[parameter(Position=0)][string]$FileFormat = "*.m4a,*.flac,*.opus",
+		[parameter(Position=0)][string]$FileFormat = "*.m4a,*.flac,*.opus,*.mp3",
 		[parameter(Position=1)][string]$Path = $PWD
 	)
 
