@@ -27,14 +27,14 @@ function genlist{
 	$ObjectList | Group-Object -Property AlbumPerformer | ForEach-Object {
 		$OutputList.Add("`nAlbum Artist(s): $($_.Name)");
 		$_.Group | Group-Object -Property AlbumName| ForEach-Object {
-			$OutputList.Add("	Album: $($_.Name)");
+			$OutputList.Add("`n	Album: $($_.Name)");
 			$_.Group | Group-Object -Property DiscNumber| ForEach-Object {
-				$OutputList.Add("		Disc Number: $($_.Name)");
+				$OutputList.Add("`n	Disc Number: $($_.Name)");
 				$_.Group | Sort-Object -Property TrackNumber |ForEach-Object {
 					if($_.AlbumPerformer -eq $_.TrackPerformer){
-						$OutputList.Add("			$($_.TrackNumber) $($_.TrackTitle)");
+						$OutputList.Add("	$($_.TrackNumber) $($_.TrackTitle)");
 					}else {
-						$OutputList.Add("			$($_.TrackNumber) $($_.TrackTitle) By: $($_.TrackPerformer)");
+						$OutputList.Add("	$($_.TrackNumber) $($_.TrackTitle) By: $($_.TrackPerformer)");
 					}
 				}
 			}
