@@ -1,40 +1,34 @@
-function RDI{
-	#RollDice
+function RollDice{
 	param(
-		[Parameter(Position=0)][int]$MaxVal=100,
-		[Parameter(Position=1)][string]$Protagonist="",
-		[Parameter(Position=2)][int]$Check,
-		[Parameter(Position=3)][string]$Object="Criterion"
+		[Parameter(Position=0)][string]$DiceExperission="1D100+0",
+		[Parameter(Position=1)][string]$Executer
 	)
-	$RandomVal = Get-Random -Maximum $Maxval;
-	if($Check -and ($RandomVal -ge $Check) ){
-		Write-Output "$($Protagonist) roll dice: $($RandomVal), won against $($Object) ($($Check))!";
-	}elseif ($Check -and ($RandomVal -lt  $Check) ) {
-		Write-Output "$($Protagonist) roll dice: $($RandomVal), lost against $($Object) ($($Check))!";
-	}else{
-		Write-Output "$($Protagonist) roll dice: $($RandomVal)";
-	}
 	
+	[int]$DiceMultipler = 1;
+	[int]$DiceModifier = 0;
+	[int]$DiceMainRoll = 100;
 
-
-}
-
-function MRDI {
-	#Multi RollDice
-	param (
-		[Parameter(Position=0)][int]$MaxVal,
-		[Parameter(Position=1)][int]$RollTime,
-		[Parameter(Position=2)][string]$Protagonist
-	)
-	if($Protagonist){
-		Write-Output "$Protagonist roll multi dices:"
-	}else{
-		Write-Output "Multi Roll:"
+	$DiceArray = $DiceExperission.Split("d");
+	if($DiceArray[0]){
+		$DiceMultipler=[int]$DiceArray[0];
 	}
-	[int]$Counter=0;
-	Get-Random -Maximum $MaxVal -Count $RollTime | ForEach-Object{
-		Write-Output "Dice $Counter : $($_)";
-		$Counter = $Counter + 1;
+	$DiceArrayBackHalf=$DiceArray[1].Split("+");
+	$DiceMainRoll=[int]$DiceArrayBackHalf[0];
+	if($DiceArrayBackHalf[1]){
+		$DiceModifier=[int]$DiceArrayBackHalf[1];
 	}
-	
+
+	$ReVal = Get-Random -Count $DiceMultipler -Maximum $DiceMainRoll;
+	$ReValState = $ReVal | Measure-Object -AllStats;
+	$VersusCount = 0;
+	$ReVal | ForEach-Object {
+		$DiceVal = $_ + $DiceModifier;
+		Write-Output "$Executer roll dice $($ReValState.Count - $VersusCount) (Modifer $DiceModifier):    $($DiceVal)";
+		$VersusCount = $VersusCount + 1;
+	}
+	if($ReValState.Count -gt 1){
+		Write-Output "Dice Result Sum: $($ReValState.Sum + $ReValState.Count * $DiceModifier)";
+	}
+
+
 }
