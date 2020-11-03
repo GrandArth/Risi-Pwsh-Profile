@@ -6,10 +6,11 @@ function CueBatch{
 	$UTF8Encoder = [System.Text.Encoding]::GetEncoding("utf-8");
 	Write-Output $OriginEncoder;
 	Write-Output $UTF8Encoder;
-	Get-ChildItem *.cue | ForEach-Object {
-		$FileContent = Get-Content $_.FullName -Raw -AsByteStream;
+	Get-ChildItem  *.cue | ForEach-Object {
+		#$FileContent = Get-Content -LiteralPath "$($_.BaseName).cue" -Raw -AsByteStream;
+		$FileContent = Get-Content -LiteralPath $_.FullName -Raw -AsByteStream;
 		$FileContentConverted = [System.Text.Encoding]::Convert($OriginEncoder, $UTF8Encoder, $FileContent);
 		$FileString = $UTF8Encoder.GetString($FileContentConverted);
-		Set-Content -Path "$($_.Directory)/$($_.BaseName)-utf8.cue" -Value $FileString;
+		Set-Content -LiteralPath "$($_.Directory)/$($_.BaseName)-utf8.cue" -Value $FileString;
 	} 
 }
