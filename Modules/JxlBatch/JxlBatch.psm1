@@ -26,7 +26,7 @@ function JXLdec{
 		if($_.Extension -eq ".jxlg"){
 			djpegxl $_.FullName "$($_.Directory)/$($_.BaseName)-decoded.jpg";
 		}elseif ($_.Extension -eq ".jxl") {
-			djpegxl $_.FullName "$($_.Directory)/$($_.BaseName)-decoded.jpg"   --jpeg_quality=100 --noise=0;
+			djpegxl $_.FullName "$($_.Directory)/$($_.BaseName)-decoded.jpg";
 			#decode any jxl file
 		}
 	}
