@@ -2,7 +2,7 @@ function JXLmen{
 	param(
 		[parameter(Position=2)][string]$RootPath=$pwd,
 		[parameter(Position=1)][int]$EncodeQuality=85,
-		[parameter(Position=0)][int]$EncodeSpeed=3
+		[parameter(Position=0)][int]$EncodeSpeed=4
 		
 	)
 	Get-ChildItem -LiteralPath $RootPath *.* -Recurse | ForEach-Object{
