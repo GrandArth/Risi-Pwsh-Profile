@@ -12,7 +12,7 @@ function FileRE{
 		$FileContent = Get-Content -LiteralPath $_.FullName -Raw -AsByteStream;
 		$FileContentConverted = [System.Text.Encoding]::Convert($OriginEncoder, $UTF8Encoder, $FileContent);
 		$FileString = $UTF8Encoder.GetString($FileContentConverted);
-		Set-Content -LiteralPath "$($_.Directory)/$($_.BaseName)-utf8.$($FileExtension)" -Value $FileString;
-		Write-Output "$($_.Directory)/$($_.BaseName)-utf8.$($FileExtension)";
+		Set-Content -LiteralPath "$($_.Directory)/$($_.BaseName).$($FileExtension)" -Value $FileString;
+		Write-Output "$($_.Directory)/$($_.BaseName).$($FileExtension)";
 	} 
 }

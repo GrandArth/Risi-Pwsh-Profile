@@ -15,7 +15,6 @@ Enjoy! And Don't Panic!
 Set-Alias -Name ss -Value Select-String
 Set-Alias -Name cr -Value Clear-RecycleBin
 
-
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8;
 [Console]::InputEncoding = [System.Text.Encoding]::UTF8;
 
