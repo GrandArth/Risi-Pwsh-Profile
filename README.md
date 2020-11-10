@@ -5,6 +5,12 @@
 
 函数的具体变量类型和顺序请查阅配置文件。
 
+## mmecab
+
+This is a workaround for windows mecab, since the only way mecab would work probably on windows is via direct file input output.
+This module create temp file for mecab to take as input and use as output.
+Mecabの文字化けを直す.
+
 ## Jpexl
 > 外部依赖 cjpegxl djpegxl
 
