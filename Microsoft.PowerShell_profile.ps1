@@ -11,7 +11,7 @@ This Powershel 7.0 + profile is created by:
 Enjoy! And Don't Panic!
 "@
 
-
+Set-Alias -Name ro -Value RollDice;
 Set-Alias -Name ss -Value Select-String;
 Set-Alias -Name cr -Value Clear-RecycleBin;
 Set-Alias -Name mc -Value mmecab;
