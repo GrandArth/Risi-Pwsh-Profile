@@ -1,6 +1,6 @@
 function RollDice{
 	param(
-		[Parameter(Position=0)][string]$DiceExperission="1D100+0",
+		[Parameter(Position=0)][string]$DiceExperission="1d20m0",
 		[Parameter(Position=1)][string]$Executer
 	)
 	
@@ -12,12 +12,20 @@ function RollDice{
 	if($DiceArray[0]){
 		$DiceMultipler=[int]$DiceArray[0];
 	}
-	$DiceArrayBackHalf=$DiceArray[1].Split("+");
+	$DiceArrayBackHalf=$DiceArray[1].Split("m");
 	$DiceMainRoll=[int]$DiceArrayBackHalf[0];
+
+	[int]$WhileModiferIndex = 1;
+	while($DiceArrayBackHalf[$WhileModiferIndex]){
+		$DiceModifier=[int]$DiceModifier + [int]$DiceArrayBackHalf[$WhileModiferIndex];
+		$WhileModiferIndex = $WhileModiferIndex + 1
+	}
+
+	<#
 	if($DiceArrayBackHalf[1]){
 		$DiceModifier=[int]$DiceArrayBackHalf[1];
 	}
-
+	#>
 	$ReVal = Get-Random -Count $DiceMultipler -Maximum $DiceMainRoll;
 	$ReValState = $ReVal | Measure-Object -AllStats;
 	$VersusCount = 0;
