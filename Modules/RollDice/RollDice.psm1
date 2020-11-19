@@ -29,16 +29,22 @@ function RollDice{
 	if($TotalNumber -eq 0){
 		$TotalNumber = 1;
 	}
+	[int]$SumDiceValue=0;
 
 	while($TotalNumber -ne 0){
 		$TotalNumber = $TotalNumber - 1;
 		$HeadValue = RollSingleDice $HeadExperissions;
 		[int]$ModifierIndexer = 1;
-		$TotalModifer = 0;
+		$TotalModifier = 0;
+		[string]$ModifierDetail="Modifier:";
 		while($RandomExperissions[$ModifierIndexer]){
-			$TotalModifer = $TotalModifer + $(RollSingleDice $RandomExperissions[$ModifierIndexer]);
+			$ModifierValue = RollSingleDice $RandomExperissions[$ModifierIndexer];
+			$TotalModifier = $TotalModifier + $ModifierValue;
+			$ModifierDetail = $ModifierDetail + " $ModifierValue "
 			$ModifierIndexer = $ModifierIndexer + 1
 		}
-		Write-Output "$Executer roll dice $($TotalNumber) (Modifer $TotalModifer):    $($TotalModifer + $HeadValue)";
+		Write-Output "$Executer Dice:$($TotalNumber)	($ModifierDetail Sum: $TotalModifier):	$($TotalModifier + $HeadValue)";
+		$SumDiceValue = $SumDiceValue + $TotalModifier + $HeadValue;
 	}
+	Write-Output "Total Dice Value: $SumDiceValue";
 }
