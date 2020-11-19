@@ -14,16 +14,14 @@ function RollSingleDice{
 	}else {
 		return [int]$DiceArray[0]
 	}
-
 }
 
 function RollDice{
 	param(
-		[Parameter(Position=0)][string]$DiceExperission="1d20md20m5mnd10",
+		[Parameter(Position=0)][string[]]$RandomExperissions=@("5d20","d20","-10","nd20"),
 		[Parameter(Position=1)][string]$Executer
 	)
 
-	$RandomExperissions = $DiceExperission.Split("m");
 	$HeadExperissions = $RandomExperissions[0];
 	[int]$TotalNumber = $HeadExperissions.Split("d")[0];
 	if($TotalNumber -eq 0){
@@ -36,15 +34,15 @@ function RollDice{
 		$HeadValue = RollSingleDice $HeadExperissions;
 		[int]$ModifierIndexer = 1;
 		$TotalModifier = 0;
-		[string]$ModifierDetail="Modifier:";
+		[string]$ModifierDetail="Modifier: ";
 		while($RandomExperissions[$ModifierIndexer]){
 			$ModifierValue = RollSingleDice $RandomExperissions[$ModifierIndexer];
 			$TotalModifier = $TotalModifier + $ModifierValue;
-			$ModifierDetail = $ModifierDetail + " $ModifierValue "
+			$ModifierDetail = $ModifierDetail + "$ModifierValue ";
 			$ModifierIndexer = $ModifierIndexer + 1
 		}
-		Write-Output "$Executer Dice:$($TotalNumber)	($ModifierDetail Sum: $TotalModifier):	$($TotalModifier + $HeadValue)";
+		Write-Output "$Executer Dice:$TotalNumber ($ModifierDetail) Val:$($TotalModifier + $HeadValue)";
 		$SumDiceValue = $SumDiceValue + $TotalModifier + $HeadValue;
 	}
-	Write-Output "Total Dice Value: $SumDiceValue";
+	Write-Output "$Executer Total Dice Value: $SumDiceValue";
 }
