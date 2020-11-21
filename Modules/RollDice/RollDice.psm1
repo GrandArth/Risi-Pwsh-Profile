@@ -17,6 +17,7 @@ function RollSingleDice{
 	}
 }
 
+#This is for roll multiple dices in the same condition.
 function RollDice{
 	param(
 		[Parameter(Position=0)][string[]]$RandomExperissions=@("5d20","d20","-10","nd20")
@@ -29,8 +30,6 @@ function RollDice{
 	[int]$TotalNumber = $HeadExperission.Split("d")[0];
 	if($TotalNumber -eq 0){$TotalNumber = 1;}
 	
-
-
 	foreach($TempNumber in 1..$TotalNumber){
 		[string]$ModifierDetail="Modifier: ";
 		$TotalModifier = 0;
@@ -55,6 +54,7 @@ function RollDice{
 	Set-Clipboard $PasteValue;
 }
 
+#for roll dices in different conditions
 function RollDiceMultiple{
 	param(
 		[Parameter(Position=0)][string[]]$RandomExperissions=@("d20","d30","nd40","nd50")
