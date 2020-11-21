@@ -15,6 +15,7 @@ Set-Alias -Name ro -Value RollDice;
 Set-Alias -Name ss -Value Select-String;
 Set-Alias -Name cr -Value Clear-RecycleBin;
 Set-Alias -Name mc -Value mmecab;
+Set-Alias -Name rom -Value RollDiceMultiple;
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8;
 [Console]::InputEncoding = [System.Text.Encoding]::UTF8;
 
