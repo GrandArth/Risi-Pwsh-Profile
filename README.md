@@ -69,6 +69,4 @@ Mecabの文字化けを直す.
 
 ## imgconv / fimgconv
 
-use ffmpeg mp4box
-
-递归地对当前目录下（默认）的图像文件进行格式转换.
+已经过时， 请使用VIPS进行转化。
