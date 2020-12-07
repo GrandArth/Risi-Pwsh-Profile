@@ -5,11 +5,11 @@ function Covergen($FilePath){
 	$imheight=[int]$imheight;
 	If($imheight -ge $imwidth)
 	{
-		magick "$($FilePath)" -gravity center -extent "($imheight)x($imheight)" "Extented-$($FilePath)";
+		magick "$($FilePath)" -gravity center -extent "($imheight)x($imheight)" "$($FilePath)";
 
 	}
 	Else
 	{
-		magick "$($FilePath)" -gravity center -extent "($imwidth)x($imwidth)" "Extented-$($FilePath)";
+		magick "$($FilePath)" -gravity center -extent "($imwidth)x($imwidth)" "$($FilePath)";
 	}
 }
