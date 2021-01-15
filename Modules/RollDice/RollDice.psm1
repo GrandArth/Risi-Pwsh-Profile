@@ -60,10 +60,14 @@ function RollDiceMultiple{
 		[Parameter(Position=0)][string[]]$RandomExperissions=@("d20","d30","nd40","nd50")
 	)
 	$PasteValue = "";
+	$ResultSum = 0;
 	foreach($RandomExperission in $RandomExperissions){
 		$Value = RollSingleDice $RandomExperission;
+		$ResultSum = $ResultSum + $Value;
 		Write-Output "Dice $RandomExperission : $Value";
 		$PasteValue = $PasteValue + "Dice $RandomExperission : $Value";
 	}
+	Write-Output "SUM: $ResultSum";
+	$PasteValue = $PasteValue + "SUM: $ResultSum"
 	Set-Clipboard $PasteValue;
 }
