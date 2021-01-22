@@ -13,19 +13,10 @@ function UpdateNameSilo($ipaddr){
 
 function RefreshNameSilo {
 	$ipv6add=ip -6 addr show eth0 | Select-String -Pattern "global";
-	$ipv6add=$ipv6add.ToString().Trim().split()[1].split("/")[0];
+	#$ipv6add=$ipv6add.ToString().Trim().split()[1].split("/")[0];
+    $ipv6add = $ipv6add[0].ToString().Trim().Split(" ")[1].Split("/")[0]
 	Write-Output "`n Warning: Current IPV6 is $ipv6add";
     #namesilo
     Write-Output "`n Warning: Updating NameSilo"
     UpdateNameSilo($ipv6add);
-	#dynv6
-	Write-Output "`n Warning: Updating for dynv6";
-	curl "https://ipv6.dynv6.com/api/update?ipv6=auto&token=xxxxxxxxxxxxxxxxx&zone=xxxxxxxxxxxxxxxxxxxxxx";
-	Write-Output "";
-	#freeDNS afraid
-	Write-Output "`n Warning: Updating for Sync Free DNS";
-	curl http://v6.sync.afraid.org/u/xxxxxxxxxxxxxxxxxxxxxxxxxxx/;
-	#noip
-	Write-Output "`n Warning: Updating for NOIP";
-	curl "https://xxxxxxxxxxxxxxxxxxxxxx@dynupdate.no-ip.com/nic/update?hostname=xxxxxxxxxxxxxxxxxx&myipv6=$($ipv6add)";
 }

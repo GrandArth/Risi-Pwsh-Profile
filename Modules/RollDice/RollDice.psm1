@@ -65,7 +65,7 @@ function RollDiceMultiple{
 		$Value = RollSingleDice $RandomExperission;
 		$ResultSum = $ResultSum + $Value;
 		Write-Output "Dice $RandomExperission : $Value";
-		$PasteValue = $PasteValue + "Dice $RandomExperission : $Value";
+		$PasteValue = $PasteValue + "Dice $RandomExperission : $Value `n";
 	}
 	Write-Output "SUM: $ResultSum";
 	$PasteValue = $PasteValue + "SUM: $ResultSum"
