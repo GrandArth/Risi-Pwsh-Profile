@@ -9,5 +9,5 @@ function mmecab{
 	Remove-Item -LiteralPath "$($PWD)/temp.txt";
 	Remove-Item -LiteralPath "$($PWD)/temp-output.txt";
 	#>
-	Write-Output $InputString | mecab -d "C:\Program Files\MeCab\dic\mecab-ipadic-neologd";
+	Write-Output $InputString | mecab -d "D:\Program Files (x86)\YUKI\MeCab\mecab-ipadic-neologd";
 }
