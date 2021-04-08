@@ -28,7 +28,7 @@ function Test-FileCRC{
     )
 
     $File = Get-Item -LiteralPath $FilePath;
-    $Regex = [regex] "\[([^\[]*)\]";
+    $Regex = [regex] "\[([^\]]*)\][^\[]*$";
     $Match=$Regex.Match("$($File.BaseName)");
     if( "$(Add-FileCRC $FilePath)"  -ne  "$($Match.Groups[1].Value)"){
         Write-Output "Warning: $($File.FullName) failed CRC32 check!";
