@@ -1,5 +1,6 @@
 function TrimS{
 	$StringToBeProcess = Get-Clipboard
-    Set-Clipboard $StringToBeProcess.Replace(" ","").Replace("`n","")
+    $StringToBeProcess = $StringToBeProcess.Replace(" ","").Replace("`n","") -join ""
+    Set-Clipboard $StringToBeProcess
 }
 
