@@ -1,7 +1,5 @@
 function TrimS{
-	param(
-		[parameter(Position=0)][string]$StringToBeProcess=""		
-	)
+	$StringToBeProcess = Get-Clipboard
     Set-Clipboard $StringToBeProcess.Replace(" ","").Replace("`n","")
 }
 
